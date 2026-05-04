@@ -1,0 +1,93 @@
+/* AI Credit Tracker — top right corner widget */
+
+#ai-credit-tracker {
+  position: fixed;
+  top: 13px;
+  right: 13px;
+  z-index: 2147483647;
+  width: 242px;
+  background: #1a1a1a;
+  border: 1px solid #2e2e2e;
+  border-radius: 11px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 13px;
+  color: #e5e5e5;
+  box-shadow: 0 4px 22px rgba(0, 0, 0, 0.4);
+  user-select: none;
+}
+
+.act-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 13px;
+  border-bottom: 1px solid #2e2e2e;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #9ca3af;
+  cursor: grab;
+}
+
+.act-header:active {
+  cursor: grabbing;
+}
+
+/* Body always visible */
+.act-body {
+  display: flex;
+  padding: 11px 13px 9px;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.act-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.act-label {
+  width: 52px;
+  font-size: 12px;
+  color: #d1d5db;
+  flex-shrink: 0;
+}
+
+.act-bar-track {
+  flex: 1;
+  height: 7px;
+  background: #2e2e2e;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.act-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+
+.act-percent {
+  width: 35px;
+  text-align: right;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+/* Reset text — only on hover */
+.act-reset {
+  display: none;
+  font-size: 10px;
+  color: #4b5563;
+  text-align: center;
+  padding: 5px 0 2px;
+  border-top: 1px solid #242424;
+  margin-top: 2px;
+}
+
+#ai-credit-tracker:hover .act-reset {
+  display: block;
+}
