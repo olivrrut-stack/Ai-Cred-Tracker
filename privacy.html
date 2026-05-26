@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — Claude Usage Tracker</title>
+  <style>
+    body {
+      max-width: 680px;
+      margin: 60px auto;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      color: #111;
+      padding: 0 24px;
+    }
+    h1 { font-size: 24px; margin-bottom: 4px; }
+    h2 { font-size: 16px; margin-top: 36px; }
+    p, li { color: #333; }
+    .updated { color: #888; font-size: 14px; margin-bottom: 40px; }
+  </style>
+</head>
+<body>
+  <h1>Privacy Policy</h1>
+  <p class="updated">Last updated: May 2025</p>
+
+  <p>Claude Usage Tracker is a Chrome extension that displays your Claude.ai message usage as a percentage in a small widget on the page.</p>
+
+  <h2>What data we access</h2>
+  <p>The extension makes requests to two Claude.ai API endpoints while you are logged in:</p>
+  <ul>
+    <li><code>/api/organizations</code> — to retrieve your organisation ID</li>
+    <li><code>/api/organizations/{id}/usage</code> — to retrieve your current usage percentage and reset time</li>
+  </ul>
+  <p>These requests are made directly from your browser to Claude.ai using your existing session cookies. No credentials or tokens are read by the extension.</p>
+
+  <h2>What data we store</h2>
+  <p>The extension stores your usage percentage and reset time locally on your device using Chrome's built-in <code>chrome.storage.local</code> API. This data never leaves your device.</p>
+
+  <h2>What data we do not collect</h2>
+  <ul>
+    <li>We do not collect, transmit, or share any personal information.</li>
+    <li>We do not read the content of your conversations.</li>
+    <li>We do not use analytics or any third-party tracking.</li>
+    <li>We do not communicate with any server other than Claude.ai.</li>
+  </ul>
+
+  <h2>Permissions</h2>
+  <p>The extension requests the following permissions:</p>
+  <ul>
+    <li><strong>storage</strong> — to save your usage data locally between page loads</li>
+    <li><strong>host permission for claude.ai</strong> — to inject the usage widget and call the usage API</li>
+  </ul>
+
+  <h2>Changes to this policy</h2>
+  <p>If this policy changes, the updated version will be published at this URL with a revised date.</p>
+
+  <h2>Contact</h2>
+  <p>If you have any questions, open an issue on the <a href="https://github.com/olivrrut-stack/Ai-Cred-Tracker">GitHub repository</a>.</p>
+</body>
+</html>
