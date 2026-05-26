@@ -2,7 +2,6 @@
 
 #ai-credit-tracker {
   position: fixed;
-  overflow: hidden;
   top: 13px;
   right: 13px;
   z-index: 2147483647;
@@ -76,18 +75,4 @@
 .act-projection {
   color: #f97316;
   font-variant-numeric: tabular-nums;
-}
-
-.act-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(20, 20, 20, 0.96);
-  font-weight: 700;
-  font-size: 15px;
-  color: #ef4444;
-  letter-spacing: 0.06em;
-  text-align: center;
 }

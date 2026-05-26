@@ -34,8 +34,6 @@ function buildWidgetHTML(usage) {
       ${projection ? `<span class="act-projection">${projection}</span>` : ""}
     </div>` : "";
 
-  const doomed = hasData && percent >= 99;
-
   return `
     <div class="act-body" id="act-body">
       <div class="act-row">
@@ -47,7 +45,6 @@ function buildWidgetHTML(usage) {
         </span>
       </div>
       ${metaRow}
-      ${doomed ? `<div class="act-overlay">YOU'RE FUCKED</div>` : ""}
     </div>
   `;
 }
