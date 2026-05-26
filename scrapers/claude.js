@@ -36,9 +36,7 @@ const ClaudeParser = {
       const data = await res.json();
       const session = data.five_hour;
       if (!session || typeof session.utilization !== "number") return null;
-      // API returns 0-100, but guard against 0-1 fraction just in case
-      const raw = session.utilization;
-      const percent = Math.max(0, Math.min(100, raw <= 1 && raw > 0 ? raw * 100 : raw));
+      const percent = Math.max(0, Math.min(100, session.utilization));
       return { percent, resetText: this._resetFromISO(session.resets_at), resetsAt: session.resets_at || null };
     } catch (_) { return null; }
   },
