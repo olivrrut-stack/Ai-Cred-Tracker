@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "The Claude Usage Widget",
   "version": "1.0.1",
-  "description": "See your Claude message usage at a glance. A floating widget shows your current limit, reset time, and a warning if you're running low.",
+  "description": "See your Claude message usage at a glance. Shows your limit, reset time, and warns you if you're about to run out.",
 
   "permissions": ["storage"],
 
