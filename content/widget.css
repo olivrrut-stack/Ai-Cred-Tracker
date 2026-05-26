@@ -1,11 +1,12 @@
-/* AI Credit Tracker — top right corner widget */
+/* AI Credit Tracker — floating widget */
 
 #ai-credit-tracker {
   position: fixed;
+  overflow: hidden;
   top: 13px;
   right: 13px;
   z-index: 2147483647;
-  width: 242px;
+  width: 220px;
   background: #1a1a1a;
   border: 1px solid #2e2e2e;
   border-radius: 11px;
@@ -14,45 +15,26 @@
   color: #e5e5e5;
   box-shadow: 0 4px 22px rgba(0, 0, 0, 0.4);
   user-select: none;
-}
-
-.act-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 9px 13px;
-  border-bottom: 1px solid #2e2e2e;
-  font-weight: 600;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #9ca3af;
   cursor: grab;
+  transform: scale(1.08);
+  transform-origin: top right;
 }
 
-.act-header:active {
+#ai-credit-tracker:active {
   cursor: grabbing;
 }
 
-/* Body always visible */
 .act-body {
   display: flex;
-  padding: 11px 13px 9px;
+  padding: 10px 13px;
   flex-direction: column;
-  gap: 9px;
+  gap: 7px;
 }
 
 .act-row {
   display: flex;
   align-items: center;
   gap: 9px;
-}
-
-.act-label {
-  width: 52px;
-  font-size: 12px;
-  color: #d1d5db;
-  flex-shrink: 0;
 }
 
 .act-bar-track {
@@ -77,17 +59,35 @@
   flex-shrink: 0;
 }
 
-/* Reset text — only on hover */
-.act-reset {
-  display: none;
+.act-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-size: 10px;
   color: #4b5563;
-  text-align: center;
-  padding: 5px 0 2px;
+  padding-top: 5px;
   border-top: 1px solid #242424;
-  margin-top: 2px;
 }
 
-#ai-credit-tracker:hover .act-reset {
-  display: block;
+.act-reset-text {
+  color: #4b5563;
+}
+
+.act-projection {
+  color: #f97316;
+  font-variant-numeric: tabular-nums;
+}
+
+.act-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(20, 20, 20, 0.96);
+  font-weight: 700;
+  font-size: 15px;
+  color: #ef4444;
+  letter-spacing: 0.06em;
+  text-align: center;
 }

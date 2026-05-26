@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Track your Claude usage with an always-visible widget showing your message limit.",
 
-  "permissions": ["storage", "scripting"],
+  "permissions": ["storage"],
 
   "host_permissions": [
     "https://claude.ai/*"
@@ -17,12 +17,6 @@
   "content_scripts": [
     {
       "matches": ["https://claude.ai/*"],
-      "js": ["injected.js"],
-      "world": "MAIN",
-      "run_at": "document_start"
-    },
-    {
-      "matches": ["https://claude.ai/*"],
       "js": [
         "storage.js",
         "scrapers/claude.js",
@@ -30,14 +24,7 @@
         "content/content.js"
       ],
       "css": ["content/widget.css"],
-      "run_at": "document_start"
-    }
-  ],
-
-  "web_accessible_resources": [
-    {
-      "resources": ["injected.js"],
-      "matches": ["https://claude.ai/*"]
+      "run_at": "document_idle"
     }
   ],
 
