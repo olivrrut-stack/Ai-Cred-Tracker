@@ -35,6 +35,7 @@ function buildWidgetHTML(usage) {
     </div>` : "";
 
   return `
+    <div class="act-header" id="act-header">Claude Usage</div>
     <div class="act-body" id="act-body">
       <div class="act-row">
         <div class="act-bar-track">
