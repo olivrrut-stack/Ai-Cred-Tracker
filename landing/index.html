@@ -142,6 +142,19 @@
       cursor: default;
     }
 
+    .act-bar-track {
+      cursor: ew-resize;
+    }
+
+    .widget-hint {
+      font-size: 9px;
+      color: var(--dimmer);
+      letter-spacing: 0.08em;
+      text-align: center;
+      margin-top: 10px;
+      opacity: 0.6;
+    }
+
     .act-header {
       padding: 8px 13px;
       font-size: 11px;
@@ -329,6 +342,7 @@
         </div>
       </div>
       <img class="widget-cat" src="/icons/icon128.png" alt="">
+      <p class="widget-hint">← drag the bar →</p>
     </div>
 
     <a class="btn" href="https://chromewebstore.google.com/detail/ffnmmghgmhkkemckifcmamfjbdfmonpp?utm_source=item-share-cb" target="_blank" rel="noopener" style="font-size:12px;padding:12px 28px;">
@@ -368,5 +382,56 @@
     <p class="footer-note">Free forever · Chrome Web Store · v1.0.1</p>
   </footer>
 
+  <script>
+    const track = document.querySelector('.act-bar-track');
+    const fill  = document.querySelector('.act-bar-fill');
+    const pct   = document.querySelector('.act-percent');
+    const meta  = document.querySelector('.act-reset-text');
+    const proj  = document.querySelector('.act-projection');
+
+    function getColor(p) {
+      if (p <= 50) return '#22c55e';
+      if (p <= 85) return '#eab308';
+      return '#ef4444';
+    }
+
+    function getMeta(p) {
+      if (p <= 50) return 'Resets in 3h 12m';
+      if (p <= 85) return 'Resets in 1h 48m';
+      return 'Resets in 0h 22m';
+    }
+
+    function getProj(p) {
+      if (p <= 50) return '';
+      if (p <= 85) return '⚠ ~1h 15m left';
+      return '⚠ ~12m left';
+    }
+
+    function update(p) {
+      p = Math.max(0, Math.min(100, p));
+      const color = getColor(p);
+      fill.style.width = p + '%';
+      fill.style.background = color;
+      pct.style.color = color;
+      pct.textContent = p + '%';
+      meta.textContent = getMeta(p);
+      proj.textContent = getProj(p);
+    }
+
+    function percentFromEvent(e) {
+      const rect = track.getBoundingClientRect();
+      const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+      return Math.round((x / rect.width) * 100);
+    }
+
+    let dragging = false;
+
+    track.addEventListener('mousedown', e => { dragging = true; update(percentFromEvent(e)); });
+    track.addEventListener('click', e => update(percentFromEvent(e)));
+    document.addEventListener('mousemove', e => { if (dragging) update(percentFromEvent(e)); });
+    document.addEventListener('mouseup', () => { dragging = false; });
+    track.addEventListener('touchstart', e => { e.preventDefault(); update(percentFromEvent(e)); }, { passive: false });
+    track.addEventListener('touchmove',  e => { e.preventDefault(); update(percentFromEvent(e)); }, { passive: false });
+  </script>
 </body>
 </html>
