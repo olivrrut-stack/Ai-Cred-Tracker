@@ -178,6 +178,22 @@
       gap: 9px;
     }
 
+    .act-period {
+      width: 16px;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--dimmer);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+    }
+
+    .act-divider {
+      height: 1px;
+      background: var(--border-subtle);
+      margin: 1px 0;
+    }
+
     .act-bar-track {
       flex: 1;
       height: 7px;
@@ -331,6 +347,7 @@
         <div class="act-header">Claude Usage</div>
         <div class="act-body">
           <div class="act-row">
+            <span class="act-period">5h</span>
             <div class="act-bar-track">
               <div class="act-bar-fill" style="width:72%;background:#f97316;"></div>
             </div>
@@ -339,6 +356,17 @@
           <div class="act-meta">
             <span class="act-reset-text">Resets in 2h 34m</span>
             <span class="act-projection">⚠ ~1h 15m left</span>
+          </div>
+          <div class="act-divider"></div>
+          <div class="act-row">
+            <span class="act-period">7d</span>
+            <div class="act-bar-track" id="sd-track">
+              <div class="act-bar-fill" id="sd-fill" style="width:35%;background:#22c55e;"></div>
+            </div>
+            <span class="act-percent" id="sd-pct" style="color:#22c55e;">35%</span>
+          </div>
+          <div class="act-meta">
+            <span class="act-reset-text">Resets in 4d 18h</span>
           </div>
         </div>
       </div>
@@ -384,55 +412,60 @@
   </footer>
 
   <script>
-    const track = document.querySelector('.act-bar-track');
-    const fill  = document.querySelector('.act-bar-fill');
-    const pct   = document.querySelector('.act-percent');
-    const meta  = document.querySelector('.act-reset-text');
-    const proj  = document.querySelector('.act-projection');
+    function makeInteractive(trackEl, fillEl, pctEl, getColor, getMeta, getProj) {
+      function update(p) {
+        p = Math.max(0, Math.min(100, p));
+        const color = getColor(p);
+        fillEl.style.width = p + '%';
+        fillEl.style.background = color;
+        pctEl.style.color = color;
+        pctEl.textContent = p + '%';
+        if (getMeta) getMeta(p);
+        if (getProj) getProj(p);
+      }
+      function pctFromEvent(e) {
+        const rect = trackEl.getBoundingClientRect();
+        const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+        return Math.round((x / rect.width) * 100);
+      }
+      let dragging = false;
+      trackEl.addEventListener('mousedown', e => { dragging = true; update(pctFromEvent(e)); });
+      trackEl.addEventListener('click', e => update(pctFromEvent(e)));
+      document.addEventListener('mousemove', e => { if (dragging) update(pctFromEvent(e)); });
+      document.addEventListener('mouseup', () => { dragging = false; });
+      trackEl.addEventListener('touchstart', e => { e.preventDefault(); update(pctFromEvent(e)); }, { passive: false });
+      trackEl.addEventListener('touchmove',  e => { e.preventDefault(); update(pctFromEvent(e)); }, { passive: false });
+    }
 
-    function getColor(p) {
+    function getColor5h(p) {
       if (p <= 50) return '#22c55e';
-      if (p <= 85) return '#eab308';
+      if (p <= 85) return '#f97316';
       return '#ef4444';
     }
 
-    function getMeta(p) {
-      if (p <= 50) return 'Resets in 3h 12m';
-      if (p <= 85) return 'Resets in 1h 48m';
-      return 'Resets in 0h 22m';
-    }
+    const meta  = document.querySelector('.act-reset-text');
+    const proj  = document.querySelector('.act-projection');
 
-    function getProj(p) {
-      if (p <= 50) return '';
-      if (p <= 85) return '⚠ ~1h 15m left';
-      return '⚠ ~12m left';
-    }
+    makeInteractive(
+      document.querySelector('.act-bar-track'),
+      document.querySelector('.act-bar-fill'),
+      document.querySelector('.act-percent'),
+      getColor5h,
+      p => {
+        meta.textContent = p <= 50 ? 'Resets in 3h 12m' : p <= 85 ? 'Resets in 1h 48m' : 'Resets in 0h 22m';
+      },
+      p => {
+        proj.textContent = p <= 50 ? '' : p <= 85 ? '⚠ ~1h 15m left' : '⚠ ~12m left';
+      }
+    );
 
-    function update(p) {
-      p = Math.max(0, Math.min(100, p));
-      const color = getColor(p);
-      fill.style.width = p + '%';
-      fill.style.background = color;
-      pct.style.color = color;
-      pct.textContent = p + '%';
-      meta.textContent = getMeta(p);
-      proj.textContent = getProj(p);
-    }
-
-    function percentFromEvent(e) {
-      const rect = track.getBoundingClientRect();
-      const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-      return Math.round((x / rect.width) * 100);
-    }
-
-    let dragging = false;
-
-    track.addEventListener('mousedown', e => { dragging = true; update(percentFromEvent(e)); });
-    track.addEventListener('click', e => update(percentFromEvent(e)));
-    document.addEventListener('mousemove', e => { if (dragging) update(percentFromEvent(e)); });
-    document.addEventListener('mouseup', () => { dragging = false; });
-    track.addEventListener('touchstart', e => { e.preventDefault(); update(percentFromEvent(e)); }, { passive: false });
-    track.addEventListener('touchmove',  e => { e.preventDefault(); update(percentFromEvent(e)); }, { passive: false });
+    makeInteractive(
+      document.getElementById('sd-track'),
+      document.getElementById('sd-fill'),
+      document.getElementById('sd-pct'),
+      p => p <= 60 ? '#22c55e' : p <= 85 ? '#f97316' : '#ef4444',
+      null, null
+    );
   </script>
 </body>
 </html>
