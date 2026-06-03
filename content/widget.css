@@ -11,7 +11,7 @@
   border-radius: 11px;
   font-family: "SF Mono", "Cascadia Code", "Fira Code", "Consolas", "Courier New", monospace;
   font-size: 13px;
-  color: #e5e5e5;
+  color: #f5e6c8;
   box-shadow: 0 4px 22px rgba(0, 0, 0, 0.4);
   user-select: none;
   cursor: grab;
@@ -31,7 +31,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #6b7280;
+  color: #c4a882;
   border-bottom: 1px solid #2e2e2e;
 }
 
@@ -39,7 +39,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: #4b5563;
+  color: #a8916e;
   font-size: 14px;
   width: 22px;
   height: 22px;
@@ -66,7 +66,7 @@
   width: 16px;
   font-size: 9px;
   font-weight: 700;
-  color: #4b5563;
+  color: #a8916e;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   flex-shrink: 0;
@@ -105,12 +105,12 @@
   justify-content: space-between;
   align-items: center;
   font-size: 10px;
-  color: #4b5563;
+  color: #a8916e;
   padding-top: 5px;
   border-top: 1px solid #242424;
 }
 
-.act-reset-text { color: #4b5563; }
+.act-reset-text { color: #a8916e; }
 .act-projection { color: #f97316; font-variant-numeric: tabular-nums; }
 
 /* ── Ghost dot (hidden in normal mode) ── */
