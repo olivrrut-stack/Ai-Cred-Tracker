@@ -19,12 +19,14 @@
   transform-origin: top right;
 }
 
-#ai-credit-tracker:active {
-  cursor: grabbing;
-}
+#ai-credit-tracker:active { cursor: grabbing; }
 
+/* ── Header ── */
 .act-header {
-  padding: 8px 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 8px 8px 13px;
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
@@ -33,6 +35,24 @@
   border-bottom: 1px solid #2e2e2e;
 }
 
+.act-ghost-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #4b5563;
+  font-size: 14px;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s, background 0.15s;
+  flex-shrink: 0;
+}
+.act-ghost-btn:hover { color: #d1d5db; background: #2e2e2e; }
+
+/* ── Body ── */
 .act-body {
   display: flex;
   padding: 10px 13px;
@@ -40,10 +60,22 @@
   gap: 7px;
 }
 
-.act-row {
-  display: flex;
-  align-items: center;
-  gap: 9px;
+.act-row { display: flex; align-items: center; gap: 9px; }
+
+.act-period {
+  width: 16px;
+  font-size: 9px;
+  font-weight: 700;
+  color: #4b5563;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.act-divider {
+  height: 1px;
+  background: #242424;
+  margin: 1px 0;
 }
 
 .act-bar-track {
@@ -78,11 +110,79 @@
   border-top: 1px solid #242424;
 }
 
-.act-reset-text {
-  color: #4b5563;
+.act-reset-text { color: #4b5563; }
+.act-projection { color: #f97316; font-variant-numeric: tabular-nums; }
+
+/* ── Ghost dot (hidden in normal mode) ── */
+.act-dot {
+  display: none;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
 }
 
-.act-projection {
-  color: #f97316;
-  font-variant-numeric: tabular-nums;
+/* ── Ghost / minimal mode ── */
+#ai-credit-tracker.act-ghost {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: none;
+  box-shadow: none;
+  background: transparent !important;
+  transform: none;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+#ai-credit-tracker.act-ghost .act-header,
+#ai-credit-tracker.act-ghost .act-body { display: none; }
+
+#ai-credit-tracker.act-ghost .act-dot { display: block; }
+
+#ai-credit-tracker.act-ghost:hover {
+  width: 220px;
+  height: auto;
+  border-radius: 11px;
+  border: 1px solid #2e2e2e !important;
+  box-shadow: 0 4px 22px rgba(0,0,0,0.4) !important;
+  transform: scale(1.08);
+  transform-origin: top right;
+  overflow: visible;
+}
+
+#ai-credit-tracker.act-ghost:hover .act-header,
+#ai-credit-tracker.act-ghost:hover .act-body { display: flex; }
+
+#ai-credit-tracker.act-ghost:hover .act-dot { display: none; }
+
+/* ── Light mode overrides ── */
+#ai-credit-tracker.act-light {
+  color: #111827;
+  box-shadow: 0 4px 22px rgba(0, 0, 0, 0.1);
+}
+
+#ai-credit-tracker.act-light .act-header {
+  color: #6b7280;
+  border-bottom-color: #e5e7eb;
+}
+
+#ai-credit-tracker.act-light .act-ghost-btn:hover {
+  color: #374151;
+  background: #f3f4f6;
+}
+
+#ai-credit-tracker.act-light .act-bar-track { background: #e5e7eb; }
+
+#ai-credit-tracker.act-light .act-meta {
+  color: #9ca3af;
+  border-top-color: #e5e7eb;
+}
+
+#ai-credit-tracker.act-light .act-reset-text { color: #9ca3af; }
+#ai-credit-tracker.act-light .act-period { color: #9ca3af; }
+#ai-credit-tracker.act-light .act-divider { background: #e5e7eb; }
+
+#ai-credit-tracker.act-ghost.act-light:hover {
+  border-color: rgba(0,0,0,0.1) !important;
+  box-shadow: 0 4px 22px rgba(0,0,0,0.1) !important;
 }

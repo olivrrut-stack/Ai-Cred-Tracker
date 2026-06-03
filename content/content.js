@@ -9,8 +9,9 @@ async function pollUsage() {
   if (!parser?.fetchUsage) return;
   const result = await parser.fetchUsage();
   if (result?.percent != null) {
-    await Storage.set(parser.platform, result.percent, { resetText: result.resetText, resetsAt: result.resetsAt });
+    await Storage.set(parser.platform, result.percent, { resetText: result.resetText, resetsAt: result.resetsAt, sevenDay: result.sevenDay });
     updateWidget();
+    chrome.runtime.sendMessage({ type: "usageUpdate", percent: result.percent }, () => void chrome.runtime.lastError);
   }
 }
 
@@ -23,6 +24,7 @@ new MutationObserver(() => {
 }).observe(document.documentElement, { childList: true, subtree: true });
 
 function init() {
+  console.log("[ACT] init");
   injectWidget();
   updateWidget();
   pollUsage();

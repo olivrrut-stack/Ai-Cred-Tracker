@@ -37,7 +37,14 @@ const ClaudeParser = {
       const session = data.five_hour;
       if (!session || typeof session.utilization !== "number") return null;
       const percent = Math.max(0, Math.min(100, session.utilization));
-      return { percent, resetText: this._resetFromISO(session.resets_at), resetsAt: session.resets_at || null };
+
+      const sd = data.seven_day;
+      const sevenDay = (sd && typeof sd.utilization === "number") ? {
+        percent: Math.max(0, Math.min(100, sd.utilization)),
+        resetText: this._resetFromISO(sd.resets_at)
+      } : null;
+
+      return { percent, resetText: this._resetFromISO(session.resets_at), resetsAt: session.resets_at || null, sevenDay };
     } catch (_) { return null; }
   },
 
