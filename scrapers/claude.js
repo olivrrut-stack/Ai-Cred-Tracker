@@ -1,6 +1,9 @@
 const ClaudeParser = {
   platform: "claude",
   _orgId: null,
+  _cache: null,
+  _cacheAt: 0,
+  _CACHE_MS: 30_000,
 
   detect() {
     return window.location.hostname === "claude.ai";
@@ -23,16 +26,36 @@ const ClaudeParser = {
     return this._orgId;
   },
 
+  async _fetchWithRetry(url, opts, retries = 2) {
+    for (let i = 0; i <= retries; i++) {
+      try {
+        const res = await fetch(url, opts);
+        if (res.status === 429 || res.status === 503) {
+          if (i < retries) { await new Promise(r => setTimeout(r, 1000 * (i + 1))); continue; }
+          return null;
+        }
+        return res.ok ? res : null;
+      } catch (_) {
+        if (i < retries) { await new Promise(r => setTimeout(r, 1000 * (i + 1))); continue; }
+        return null;
+      }
+    }
+  },
+
   async fetchUsage() {
+    if (this._cache && Date.now() - this._cacheAt < this._CACHE_MS) return this._cache;
+
     const orgId = await this._getOrgId();
     if (!orgId) return null;
+
+    const res = await this._fetchWithRetry(`/api/organizations/${orgId}/usage`, {
+      credentials: "include",
+      headers: { Accept: "application/json" },
+      cache: "no-store"
+    });
+    if (!res) return null;
+
     try {
-      const res = await fetch(`/api/organizations/${orgId}/usage`, {
-        credentials: "include",
-        headers: { Accept: "application/json" },
-        cache: "no-store"
-      });
-      if (!res.ok) return null;
       const data = await res.json();
       const session = data.five_hour;
       if (!session || typeof session.utilization !== "number") return null;
@@ -44,7 +67,9 @@ const ClaudeParser = {
         resetText: this._resetFromISO(sd.resets_at)
       } : null;
 
-      return { percent, resetText: this._resetFromISO(session.resets_at), resetsAt: session.resets_at || null, sevenDay };
+      this._cache = { percent, resetText: this._resetFromISO(session.resets_at), resetsAt: session.resets_at || null, sevenDay };
+      this._cacheAt = Date.now();
+      return this._cache;
     } catch (_) { return null; }
   },
 
