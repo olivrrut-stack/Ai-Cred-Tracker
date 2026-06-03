@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "The Claude Usage Widget",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "See your Claude message usage at a glance. Shows your limit, reset time, and warns you if you're about to run out.",
 
   "permissions": ["storage", "notifications"],
