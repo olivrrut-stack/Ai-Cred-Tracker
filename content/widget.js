@@ -43,10 +43,13 @@ function buildWidgetHTML(usage) {
       <span class="act-reset-text">${sd.resetText}</span>
     </div>` : "";
 
+  const ringCirc = 43.98;
+  const ringDash = ((percent / 100) * ringCirc).toFixed(2);
+
   return `
     <div class="act-header" id="act-header">
       <span>Claude Usage</span>
-      <button class="act-ghost-btn" id="act-ghost-btn" title="Minimal mode">◉</button>
+      <button class="act-ghost-btn" id="act-ghost-btn" title="Minimal mode">−</button>
     </div>
     <div class="act-body" id="act-body">
       <div class="act-row">
@@ -71,7 +74,13 @@ function buildWidgetHTML(usage) {
       </div>
       ${sdMetaRow}
     </div>
-    <div class="act-dot" id="act-dot" style="background: ${color};"></div>
+    <svg class="act-ring" id="act-ring" viewBox="0 0 20 20" width="20" height="20">
+      <circle cx="10" cy="10" r="7" fill="none" stroke-width="3" class="act-ring-bg"/>
+      <circle cx="10" cy="10" r="7" fill="none" stroke="${color}" stroke-width="3"
+        stroke-dasharray="${ringDash} ${ringCirc}"
+        stroke-linecap="round"
+        transform="rotate(-90 10 10)"/>
+    </svg>
   `;
 }
 
@@ -140,11 +149,16 @@ function injectWidget() {
     widget.classList.add("act-ghost");
   }
 
+  widget.addEventListener("click", () => {
+    if (!widget.classList.contains("act-ghost")) return;
+    widget.classList.remove("act-ghost");
+    localStorage.setItem("actGhostMode", "0");
+  });
+
   document.getElementById("act-ghost-btn")?.addEventListener("click", (e) => {
     e.stopPropagation();
     const isGhost = widget.classList.toggle("act-ghost");
     localStorage.setItem("actGhostMode", isGhost ? "1" : "0");
-    console.log("[ACT] ghost mode:", isGhost);
   });
 }
 
@@ -153,15 +167,16 @@ async function updateWidget() {
   if (!widget) return;
   const usage = await Storage.getAll();
 
-  const data = usage.claude;
-  const color = getBarColor(data?.percent ?? 0);
-  const dot = document.getElementById("act-dot");
-  if (dot) dot.style.background = color;
-
-  const body = document.getElementById("act-body");
   const temp = document.createElement("div");
   temp.innerHTML = buildWidgetHTML(usage);
+
+  const body = document.getElementById("act-body");
   const newBody = temp.querySelector("#act-body");
   if (body && newBody) body.replaceWith(newBody);
+
+  const ring = document.getElementById("act-ring");
+  const newRing = temp.querySelector("#act-ring");
+  if (ring && newRing) ring.replaceWith(newRing);
+
   syncBg(widget);
 }
